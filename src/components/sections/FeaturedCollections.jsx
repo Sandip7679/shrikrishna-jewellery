@@ -45,7 +45,8 @@ const FeaturedCollections = () => {
           {collections.map((item) => (
             <Link
               key={item.id}
-              to={item.link}
+              // to={item.link}
+              to={'/collections'}
               className="group block relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition"
             >
               <img
