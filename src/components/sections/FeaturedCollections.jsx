@@ -1,66 +1,231 @@
-import { Link } from 'react-router-dom';
-import image1 from '../../assets/images/neckless4.jpeg'
-import image2 from '../../assets/images/neckless1.jpeg'
-import image3 from '../../assets/images/ring1.jpg'
-import image5 from '../../assets/images/neckless2.jpeg'
-import image4 from '../../assets/images/ring2.jpg'
-import image6 from '../../assets/images/neckless3.jpeg'
+
+// import { Link } from "react-router-dom";
+// import { motion } from "framer-motion";
+// import image1 from "../../assets/images/neckless4.jpeg";
+// import image2 from "../../assets/images/neckless1.jpeg";
+// import image3 from "../../assets/images/ring1.jpg";
+// import image4 from "../../assets/images/ring2.jpg";
+
+// const collections = [
+//   {
+//     id: 1,
+//     title: "Gold Collection",
+//     image: image1,
+//     link: "/collections/gold",
+//   },
+//   {
+//     id: 2,
+//     title: "Diamond Elegance",
+//     image: image2,
+//     link: "/collections/diamond",
+//   },
+//   {
+//     id: 3,
+//     title: "Silver Grace",
+//     image: image3,
+//     link: "/collections/silver",
+//   },
+//   {
+//     id: 4,
+//     title: "Bridal Heritage",
+//     image: image4,
+//     link: "/collections/bridal",
+//   },
+// ];
+
+// const fadeUp = {
+//   hidden: { opacity: 0, y: 40 },
+//   show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+// };
+
+// const FeaturedCollections = () => {
+//   return (
+//     <section className="py-24 bg-gradient-to-b from-gray-50 via-white to-gray-50 relative overflow-hidden">
+//       {/* Soft background sparkle effect */}
+//       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top_left,rgba(200,200,200,0.15),transparent_60%)]" />
+
+//       <div className="container mx-auto px-6 text-center relative z-10">
+//         <motion.h2
+//           initial={{ opacity: 0, y: -30 }}
+//           whileInView={{ opacity: 1, y: 0 }}
+//           transition={{ duration: 0.8 }}
+//           viewport={{ once: true }}
+//           className="text-3xl md:text-4xl font-bold text-gray-800 mb-14"
+//         >
+//           Featured Collections
+//         </motion.h2>
+
+//         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+//           {collections.map((item, index) => (
+//             <motion.div
+//               key={item.id}
+//               variants={fadeUp}
+//               initial="hidden"
+//               whileInView="show"
+//               viewport={{ once: true }}
+//               transition={{ delay: index * 0.15 }}
+//             >
+//               <Link
+//                 to={"/collections"}
+//                 className="group block relative overflow-hidden rounded-3xl 
+//                   bg-white/10 backdrop-blur-md border border-white/30 
+//                   shadow-[0_4px_30px_rgba(0,0,0,0.1)] hover:shadow-[0_6px_40px_rgba(0,0,0,0.15)] 
+//                   transition-all duration-500"
+//               >
+//                 <div className="relative overflow-hidden">
+//                   <motion.img
+//                     src={item.image}
+//                     alt={item.title}
+//                     className="w-full h-64 object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
+//                     whileHover={{ rotate: 1 }}
+//                   />
+
+//                   {/* soft gradient overlay */}
+//                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent group-hover:from-black/30 transition duration-500" />
+
+//                   {/* Light reflection shine */}
+//                   <div className="absolute top-0 left-[-75%] w-[50%] h-full bg-gradient-to-r from-transparent via-white/20 to-transparent transform rotate-12 group-hover:left-[125%] transition-all duration-1000 ease-in-out"></div>
+
+//                   <h3 className="absolute bottom-6 left-0 right-0 text-center text-xl text-white font-semibold tracking-wide">
+//                     {item.title}
+//                   </h3>
+//                 </div>
+//               </Link>
+//             </motion.div>
+//           ))}
+//         </div>
+//       </div>
+//     </section>
+//   );
+// };
+
+// export default FeaturedCollections;
+
+
+
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination,Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import image1 from "../../assets/images/neckless4.jpeg";
+import image2 from "../../assets/images/neckless1.jpeg";
+import image3 from "../../assets/images/ring1.jpg";
+import image4 from "../../assets/images/ring2.jpg";
 
 const collections = [
   {
     id: 1,
-    title: 'Gold Collection',
+    title: "Gold Collection",
     image: image1,
-    link: '/collections/gold',
+    link: "/collections/gold",
   },
   {
     id: 2,
-    title: 'Diamond Elegance',
+    title: "Diamond Elegance",
     image: image2,
-    link: '/collections/diamond',
+    link: "/collections/diamond",
   },
   {
     id: 3,
-    title: 'Silver Grace',
+    title: "Silver Grace",
     image: image3,
-    link: '/collections/silver',
+    link: "/collections/silver",
   },
   {
     id: 4,
-    title: 'Bridal Heritage',
+    title: "Bridal Heritage",
     image: image4,
-    link: '/collections/bridal',
+    link: "/collections/bridal",
+  },
+   {
+    id: 5,
+    title: "Diamond Elegance",
+    image: image2,
+    link: "/collections/diamond",
   },
 ];
 
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+};
+
 const FeaturedCollections = () => {
   return (
-    <section className="py-20 bg-white">
-      <div className="container text-center">
-        <h2 className="text-3xl font-heading text-brand-maroon mb-10">
-          Featured Collections
-        </h2>
+    <section className="py-24 bg-gradient-to-b from-gray-50 via-white to-gray-50 relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top_left,rgba(200,200,200,0.15),transparent_60%)]" />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {collections.map((item) => (
-            <Link
-              key={item.id}
-              // to={item.link}
-              to={'/collections'}
-              className="group block relative overflow-hidden rounded-2xl shadow-lg hover:shadow-xl transition"
-            >
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition" />
-              <h3 className="absolute bottom-6 left-0 right-0 text-center text-xl text-white font-heading">
-                {item.title}
-              </h3>
-            </Link>
+      <div className="container mx-auto px-6 text-center relative z-10">
+        <motion.h2
+          initial={{ opacity: 0, y: -30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-3xl md:text-4xl font-bold text-gray-800 mb-14"
+        >
+          Featured Collections
+        </motion.h2>
+
+        {/* Swiper Carousel */}
+        <Swiper
+          modules={[Autoplay, Pagination, Navigation]}
+          spaceBetween={30}
+          slidesPerView={1}
+          pagination={{ clickable: true }}
+          navigation={true}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+            reverseDirection: false, // always forward
+          }}
+          // autoplay={{ delay: 3000, disableOnInteraction: false }}
+          breakpoints={{
+            640: { slidesPerView: 2 },
+            1024: { slidesPerView: 4 },
+          }}
+          loop={true}
+          // className="pb-16"
+          style={{paddingBottom:'37px'}}
+        >
+          {collections.map((item, index) => (
+            <SwiperSlide key={item.id}>
+              <motion.div
+                variants={fadeUp}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.15 }}
+              >
+                <Link
+                  to={item.link}
+                  className="group block relative overflow-hidden rounded-3xl 
+                    bg-white/10 backdrop-blur-md border border-white/30 
+                    shadow-[0_4px_30px_rgba(0,0,0,0.1)] hover:shadow-[0_6px_40px_rgba(0,0,0,0.15)] 
+                    transition-all duration-500"
+                >
+                  <div className="relative overflow-hidden">
+                    <motion.img
+                      src={item.image}
+                      alt={item.title}
+                      className="w-full h-64 object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
+                      whileHover={{ rotate: 1 }}
+                    />
+
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent group-hover:from-black/30 transition duration-500" />
+                    <div className="absolute top-0 left-[-75%] w-[50%] h-full bg-gradient-to-r from-transparent via-white/20 to-transparent transform rotate-12 group-hover:left-[125%] transition-all duration-1000 ease-in-out"></div>
+
+                    <h3 className="absolute bottom-6 left-0 right-0 text-center text-xl text-white font-semibold tracking-wide">
+                      {item.title}
+                    </h3>
+                  </div>
+                </Link>
+              </motion.div>
+            </SwiperSlide>
           ))}
-        </div>
+        </Swiper>
       </div>
     </section>
   );
@@ -71,64 +236,105 @@ export default FeaturedCollections;
 
 
 
-// import React from "react";
+// import { Link } from "react-router-dom";
+// import { motion } from "framer-motion";
+// import { Swiper, SwiperSlide } from "swiper/react";
+// import { Autoplay, Pagination } from "swiper/modules";
+// import "swiper/css";
+// import "swiper/css/pagination";
+// import image1 from "../../assets/images/neckless4.jpeg";
+// import image2 from "../../assets/images/neckless1.jpeg";
+// import image3 from "../../assets/images/ring1.jpg";
+// import image4 from "../../assets/images/ring2.jpg";
 
 // const collections = [
-//   {
-//     title: "Silver Necklaces",
-//     image:
-//       "https://images.unsplash.com/photo-1617038220319-3b5a5b8ed9f8?auto=format&fit=crop&w=1000&q=80",
-//     link: "/collections/necklaces",
-//   },
-//   {
-//     title: "Silver Earrings",
-//     image:
-//       "https://images.unsplash.com/photo-1606761568499-6d2451b23c8f?auto=format&fit=crop&w=1000&q=80",
-//     link: "/collections/earrings",
-//   },
-//   {
-//     title: "Silver Bangles",
-//     image:
-//       "https://images.unsplash.com/photo-1617038205949-40e2ffb5e6a4?auto=format&fit=crop&w=1000&q=80",
-//     link: "/collections/bangles",
-//   },
-//   {
-//     title: "Silver Rings",
-//     image:
-//       "https://images.unsplash.com/photo-1603808033192-082d236f7b8b?auto=format&fit=crop&w=1000&q=80",
-//     link: "/collections/rings",
-//   },
+//   { id: 1, title: "Gold Collection", image: image1, link: "/collections/gold" },
+//   { id: 2, title: "Diamond Elegance", image: image2, link: "/collections/diamond" },
+//   { id: 3, title: "Silver Grace", image: image3, link: "/collections/silver" },
+//   { id: 4, title: "Bridal Heritage", image: image4, link: "/collections/bridal" },
+//   { id: 5, title: "Royal Diamonds", image: image2, link: "/collections/diamond" },
 // ];
+
+// const fadeUp = {
+//   hidden: { opacity: 0, y: 40 },
+//   show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+// };
 
 // const FeaturedCollections = () => {
 //   return (
-//     <section className="py-16 bg-white">
-//       <div className="container mx-auto px-6 text-center">
-//         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-10">
-//           Explore Our Silver Collections
-//         </h2>
+//     <section className="py-24 bg-gradient-to-b from-gray-50 via-white to-gray-50 relative overflow-hidden">
+//       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top_left,rgba(200,200,200,0.15),transparent_60%)]" />
 
-//         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+//       <div className="container mx-auto px-6 text-center relative z-10">
+//         <motion.h2
+//           initial={{ opacity: 0, y: -30 }}
+//           whileInView={{ opacity: 1, y: 0 }}
+//           transition={{ duration: 0.8 }}
+//           viewport={{ once: true }}
+//           className="text-3xl md:text-4xl font-bold text-gray-800 mb-14"
+//         >
+//           Featured Collections
+//         </motion.h2>
+
+//         {/* ✅ Swiper Carousel */}
+//         <Swiper
+//           modules={[Autoplay, Pagination]}
+//           spaceBetween={30}
+//           slidesPerView={1}
+//           loop={true} // continuous loop in one direction
+//           speed={1000}
+//           pagination={{
+//             clickable: true,
+//             bulletClass: "swiper-pagination-bullet !bg-gray-400",
+//             bulletActiveClass: "!bg-gray-800",
+//           }}
+//           autoplay={{
+//             delay: 2500,
+//             disableOnInteraction: false,
+//             reverseDirection: false, // always forward
+//           }}
+//           breakpoints={{
+//             640: { slidesPerView: 2 },
+//             1024: { slidesPerView: 4 },
+//           }}
+//           className="pb-16" // more space below for dots
+//         >
 //           {collections.map((item, index) => (
-//             <a
-//               key={index}
-//               href={item.link}
-//               className="group block overflow-hidden rounded-2xl shadow-md hover:shadow-xl transition"
-//             >
-//               <div className="relative">
-//                 <img
-//                   src={item.image}
-//                   alt={item.title}
-//                   className="w-full h-64 object-cover transform group-hover:scale-105 transition duration-500"
-//                 />
-//                 <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition" />
-//                 <h3 className="absolute bottom-4 left-0 right-0 text-white text-lg font-semibold z-10">
-//                   {item.title}
-//                 </h3>
-//               </div>
-//             </a>
+//             <SwiperSlide key={item.id}>
+//               <motion.div
+//                 variants={fadeUp}
+//                 initial="hidden"
+//                 whileInView="show"
+//                 viewport={{ once: true }}
+//                 transition={{ delay: index * 0.15 }}
+//               >
+//                 <Link
+//                   to={item.link}
+//                   className="group block relative overflow-hidden rounded-3xl 
+//                     bg-white/10 backdrop-blur-md border border-white/30 
+//                     shadow-[0_4px_30px_rgba(0,0,0,0.1)] hover:shadow-[0_6px_40px_rgba(0,0,0,0.15)] 
+//                     transition-all duration-500"
+//                 >
+//                   <div className="relative overflow-hidden">
+//                     <motion.img
+//                       src={item.image}
+//                       alt={item.title}
+//                       className="w-full h-64 object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
+//                       whileHover={{ rotate: 1 }}
+//                     />
+
+//                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent group-hover:from-black/30 transition duration-500" />
+//                     <div className="absolute top-0 left-[-75%] w-[50%] h-full bg-gradient-to-r from-transparent via-white/20 to-transparent transform rotate-12 group-hover:left-[125%] transition-all duration-1000 ease-in-out"></div>
+
+//                     <h3 className="absolute bottom-6 left-0 right-0 text-center text-xl text-white font-semibold tracking-wide">
+//                       {item.title}
+//                     </h3>
+//                   </div>
+//                 </Link>
+//               </motion.div>
+//             </SwiperSlide>
 //           ))}
-//         </div>
+//         </Swiper>
 //       </div>
 //     </section>
 //   );

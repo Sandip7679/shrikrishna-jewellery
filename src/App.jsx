@@ -28,6 +28,7 @@ import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import JewelleryDetails from "./pages/JewelleryDetails";
 import { useEffect } from "react";
+import LanguageSwitcher from "./components/LanguageSwitcher";
 // import Collections from "./pages/Collections";
 // import Collection from "./pages/Collection";
 // import Product from "./pages/Product";
@@ -45,19 +46,22 @@ function App() {
   // }, [pathname]);
 
   return (
-    <MainLayout>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/collections" element={<Collections />} />
-        <Route path="/jewllery-details" element={<JewelleryDetails />} />
-        {/* <Route path="/collections/:slug" element={<Collection />} /> */}
-        {/* <Route path="/product/:id" element={<Product />} /> */}
-        <Route path="/about" element={<About />} />
-        <Route path="/gallery" element={<Gallery />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </MainLayout>
+    <>
+      <LanguageSwitcher />
+      <MainLayout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/collections" element={<Collections />} />
+          <Route path="/jewllery-details" element={<JewelleryDetails />} />
+          {/* <Route path="/collections/:slug" element={<Collection />} /> */}
+          {/* <Route path="/product/:id" element={<Product />} /> */}
+          <Route path="/about" element={<About />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </MainLayout>
+    </>
   );
 }
 
