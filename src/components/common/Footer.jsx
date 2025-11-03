@@ -5,6 +5,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react";
+import WhatsAppButton from "../WhatsAppButton";
 
 const Footer = () => {
   return (
@@ -65,6 +66,9 @@ const Footer = () => {
       <div className="border-t border-amber-100 py-4 text-center text-sm text-gray-600 bg-amber-100">
         © {new Date().getFullYear()} JewelAura — Crafted with 💛 in India.
       </div>
+     
+     <WhatsAppButton/>
+
     </footer>
   );
 };
