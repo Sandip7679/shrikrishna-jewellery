@@ -29,6 +29,7 @@ import NotFound from "./pages/NotFound";
 import JewelleryDetails from "./pages/JewelleryDetails";
 import { useEffect } from "react";
 import LanguageSwitcher from "./components/LanguageSwitcher";
+import SilverJewelleryDetails from "./pages/SilverJewelleryDetails";
 // import Collections from "./pages/Collections";
 // import Collection from "./pages/Collection";
 // import Product from "./pages/Product";
@@ -52,7 +53,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/collections" element={<Collections />} />
-          <Route path="/jewllery-details" element={<JewelleryDetails />} />
+          {/* <Route path="/jewllery-details" element={<JewelleryDetails />} /> */}
+          <Route path="/jewllery-details" element={<SilverJewelleryDetails />} />
+          <Route path="/jewllery-details/:id" element={<SilverJewelleryDetails />} />
           {/* <Route path="/collections/:slug" element={<Collection />} /> */}
           {/* <Route path="/product/:id" element={<Product />} /> */}
           <Route path="/about" element={<About />} />

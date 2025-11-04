@@ -15,7 +15,7 @@ export default function LanguageSwitcher() {
       new window.google.translate.TranslateElement(
         {
           pageLanguage: "en",
-          includedLanguages: "en,hi,bn,gu,ta,te,ml,or",
+          includedLanguages: "en,hi,te,bn,gu,ta,ml,or",
           layout: window.google.translate.TranslateElement.InlineLayout.HORIZONTAL,
         },
         "google_translate_element"
@@ -31,8 +31,9 @@ export default function LanguageSwitcher() {
       style={{
         position: "fixed",
         top: "85px",
+        // bottom:"1px",
         right: "15px",
-        zIndex: 9999,
+        zIndex: 15,
         background: "white",
         borderRadius: "8px",
         padding: "6px 10px",
