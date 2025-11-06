@@ -48,7 +48,7 @@ function App() {
 
   return (
     <>
-      <LanguageSwitcher />
+      {/* <LanguageSwitcher /> */}
       <MainLayout>
         <Routes>
           <Route path="/" element={<Home />} />

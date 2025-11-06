@@ -91,6 +91,7 @@ import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import LanguageSwitcher from "../LanguageSwitcher";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -115,21 +116,26 @@ const Header = () => {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex space-x-6">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              className={({ isActive }) =>
-                `text-gray-700 hover:text-amber-600 transition ${
-                  isActive ? "font-semibold text-amber-600" : ""
-                }`
-              }
-            >
-              {item.name}
-            </NavLink>
-          ))}
+        <nav className="flex space-x-6">
+          <div className="hidden md:flex space-x-6 items-center">
+            {navItems.map((item) => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) =>
+                  `text-gray-700 hover:text-amber-600 transition ${isActive ? "font-semibold text-amber-600" : ""
+                  }`
+                }
+              >
+                {item.name}
+              </NavLink>
+            ))}
+          </div>
+            <LanguageSwitcher />
         </nav>
+        {/* <nav className="md:hidden absolute top-20 right-6">
+          <LanguageSwitcher />
+        </nav> */}
 
         {/* Mobile Menu Button */}
         <button
@@ -187,8 +193,7 @@ const Header = () => {
                       to={item.path}
                       onClick={() => setMenuOpen(false)}
                       className={({ isActive }) =>
-                        `block text-lg font-medium text-gray-700 hover:text-amber-600 transition ${
-                          isActive ? "text-amber-600 font-semibold" : ""
+                        `block text-lg font-medium text-gray-700 hover:text-amber-600 transition ${isActive ? "text-amber-600 font-semibold" : ""
                         }`
                       }
                     >
