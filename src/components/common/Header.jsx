@@ -1,219 +1,183 @@
-
-
-// import React, { useState } from "react";
-// import { Link, NavLink } from "react-router-dom";
-// import { Menu, X } from "lucide-react"; // using lucide-react for clean icons
-
-// const Header = () => {
-//   const [menuOpen, setMenuOpen] = useState(false);
-
-//   const navItems = [
-//     { name: "Home", path: "/" },
-//     { name: "Collections", path: "/collections" },
-//     { name: "Gallery", path: "/gallery" },
-//     { name: "About", path: "/about" },
-//     { name: "Contact", path: "/contact" },
-//   ];
-
-//   return (
-//     <header className="shadow-sm border-b bg-white sticky top-0 z-50">
-//       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-//         {/* Logo */}
-//         <Link
-//           to="/"
-//           className="text-2xl font-bold tracking-wide text-amber-600"
-//         >
-//           JewelAura
-//         </Link>
-
-//         {/* Desktop Nav */}
-//         <nav className="hidden md:flex space-x-6">
-//           {navItems.map((item) => (
-//             <NavLink
-//               key={item.path}
-//               to={item.path}
-//               className={({ isActive }) =>
-//                 `text-gray-700 hover:text-amber-600 transition ${
-//                   isActive ? "font-semibold text-amber-600" : ""
-//                 }`
-//               }
-//             >
-//               {item.name}
-//             </NavLink>
-//           ))}
-//         </nav>
-
-//         {/* Mobile Menu Button */}
-//         <button
-//           onClick={() => setMenuOpen(!menuOpen)}
-//           className="md:hidden text-gray-700 hover:text-amber-600 focus:outline-none"
-//           aria-label="Toggle Menu"
-//         >
-//           {menuOpen ? <X size={26} /> : <Menu size={26} />}
-//         </button>
-//       </div>
-
-//       {/* Mobile Menu Dropdown */}
-//       <div
-//         className={`md:hidden bg-white border-t transition-all duration-300 ease-in-out ${
-//           menuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0 overflow-hidden"
-//         }`}
-//       >
-//         <nav className="flex flex-col p-4 space-y-4">
-//           {navItems.map((item) => (
-//             <NavLink
-//               key={item.path}
-//               to={item.path}
-//               onClick={() => setMenuOpen(false)}
-//               className={({ isActive }) =>
-//                 `block text-gray-700 hover:text-amber-600 transition ${
-//                   isActive ? "font-semibold text-amber-600" : ""
-//                 }`
-//               }
-//             >
-//               {item.name}
-//             </NavLink>
-//           ))}
-//         </nav>
-//       </div>
-//     </header>
-//   );
-// };
-
-// export default Header;
-
-
-
-
-
-
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Phone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import LanguageSwitcher from "../LanguageSwitcher";
+import useSiteSettings from "../../hooks/useSiteSettings";
+
+const navItems = [
+  { name: "Home", path: "/" },
+  { name: "Collections", path: "/collections" },
+  { name: "Gallery", path: "/gallery" },
+  { name: "About", path: "/about" },
+  { name: "Contact", path: "/contact" },
+];
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const { data: settings } = useSiteSettings();
 
-  const navItems = [
-    { name: "Home", path: "/" },
-    { name: "Collections", path: "/collections" },
-    { name: "Gallery", path: "/gallery" },
-    { name: "About", path: "/about" },
-    { name: "Contact", path: "/contact" },
-  ];
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const siteName = settings?.siteName || "Shree Krishna Silver";
+  const phone = settings?.phone || "";
 
   return (
-    <header className="shadow-sm border-b bg-white sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        {/* Logo */}
-        <Link
-          to="/"
-          className="text-2xl font-bold tracking-wide text-amber-600"
-        >
-          JewelAura
-        </Link>
+    <>
+      <header
+        className={`sticky top-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? "bg-white/95 backdrop-blur-md shadow-md border-b border-amber-100"
+            : "bg-white border-b border-gray-100"
+        }`}
+      >
+        {/* Top bar — phone on desktop */}
+        {phone && (
+          <div className="hidden md:flex justify-end items-center bg-amber-900 text-amber-100 text-xs px-6 py-1.5 gap-2">
+            <Phone className="w-3 h-3" />
+            <span>{phone}</span>
+          </div>
+        )}
 
-        {/* Desktop Nav */}
-        <nav className="flex space-x-6">
-          <div className="hidden md:flex space-x-6 items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+          {/* Logo */}
+          <Link to="/" className="flex flex-col leading-none">
+            <span
+              className="text-xl sm:text-2xl font-bold text-amber-800 tracking-wide"
+              style={{ fontFamily: "var(--font-heading)" }}
+            >
+              {siteName}
+            </span>
+            <span className="text-[10px] tracking-[0.2em] text-gray-500 uppercase hidden sm:block">
+              Pure Silver Jewellery
+            </span>
+          </Link>
+
+          {/* Desktop Nav */}
+          <nav className="hidden md:flex items-center gap-1">
             {navItems.map((item) => (
               <NavLink
                 key={item.path}
                 to={item.path}
                 className={({ isActive }) =>
-                  `text-gray-700 hover:text-amber-600 transition ${isActive ? "font-semibold text-amber-600" : ""
+                  `relative px-4 py-2 text-sm font-medium transition-colors duration-200 rounded-md ${
+                    isActive
+                      ? "text-amber-700"
+                      : "text-gray-700 hover:text-amber-700"
                   }`
                 }
               >
-                {item.name}
+                {({ isActive }) => (
+                  <>
+                    {item.name}
+                    {isActive && (
+                      <motion.span
+                        layoutId="nav-underline"
+                        className="absolute bottom-0 left-3 right-3 h-0.5 bg-amber-600 rounded-full"
+                      />
+                    )}
+                  </>
+                )}
               </NavLink>
             ))}
-          </div>
-            <LanguageSwitcher />
-        </nav>
-        {/* <nav className="md:hidden absolute top-20 right-6">
-          <LanguageSwitcher />
-        </nav> */}
+          </nav>
 
-        {/* Mobile Menu Button */}
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden text-gray-700 hover:text-amber-600 focus:outline-none"
-          aria-label="Toggle Menu"
-        >
-          {menuOpen ? <X size={26} /> : <Menu size={26} />}
-        </button>
-      </div>
+          {/* Mobile hamburger */}
+          <button
+            onClick={() => setMenuOpen(true)}
+            className="md:hidden p-2 rounded-lg text-gray-700 hover:text-amber-700 hover:bg-amber-50 transition"
+            aria-label="Open menu"
+          >
+            <Menu size={24} />
+          </button>
+        </div>
+      </header>
 
-      {/* Sidebar Animation (Framer Motion) */}
+      {/* Mobile Drawer */}
       <AnimatePresence>
         {menuOpen && (
           <>
-            {/* Overlay */}
             <motion.div
               key="overlay"
               initial={{ opacity: 0 }}
-              animate={{ opacity: 0.4 }}
+              animate={{ opacity: 0.5 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
               className="fixed inset-0 bg-black z-40"
               onClick={() => setMenuOpen(false)}
             />
-
-            {/* Sidebar Menu */}
             <motion.aside
-              key="sidebar"
+              key="drawer"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="fixed top-0 right-0 w-72 h-full bg-white shadow-2xl z-50 flex flex-col justify-between"
+              transition={{ type: "spring", stiffness: 320, damping: 32 }}
+              className="fixed top-0 right-0 h-full w-72 bg-white z-50 shadow-2xl flex flex-col"
             >
-              <div className="p-6">
-                {/* Header inside Sidebar */}
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-xl font-semibold text-amber-600">
-                    JewelAura
-                  </h2>
-                  <button
-                    onClick={() => setMenuOpen(false)}
-                    className="text-gray-600 hover:text-amber-600"
-                  >
-                    <X size={24} />
-                  </button>
-                </div>
+              {/* Drawer header */}
+              <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 bg-amber-900">
+                <span
+                  className="text-xl font-bold text-white"
+                  style={{ fontFamily: "var(--font-heading)" }}
+                >
+                  {siteName}
+                </span>
+                <button
+                  onClick={() => setMenuOpen(false)}
+                  className="text-white/80 hover:text-white transition"
+                >
+                  <X size={22} />
+                </button>
+              </div>
 
-                {/* Navigation Links */}
-                <nav className="flex flex-col space-y-4">
-                  {navItems.map((item) => (
+              {/* Drawer nav */}
+              <nav className="flex flex-col px-4 py-6 gap-1 flex-1">
+                {navItems.map((item, i) => (
+                  <motion.div
+                    key={item.path}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.06 }}
+                  >
                     <NavLink
-                      key={item.path}
                       to={item.path}
                       onClick={() => setMenuOpen(false)}
                       className={({ isActive }) =>
-                        `block text-lg font-medium text-gray-700 hover:text-amber-600 transition ${isActive ? "text-amber-600 font-semibold" : ""
+                        `block px-4 py-3 rounded-xl text-base font-medium transition-colors ${
+                          isActive
+                            ? "bg-amber-50 text-amber-800 font-semibold"
+                            : "text-gray-700 hover:bg-gray-50 hover:text-amber-700"
                         }`
                       }
                     >
                       {item.name}
                     </NavLink>
-                  ))}
-                </nav>
-              </div>
+                  </motion.div>
+                ))}
+              </nav>
 
-              {/* Footer of Sidebar */}
-              <div className="p-6 border-t">
-                <p className="text-sm text-gray-500">
-                  © {new Date().getFullYear()} JewelAura
+              {/* Drawer footer */}
+              <div className="px-6 py-5 border-t border-gray-100 bg-gray-50">
+                {phone && (
+                  <a
+                    href={`tel:${phone}`}
+                    className="flex items-center gap-2 text-sm text-amber-800 font-medium mb-2"
+                  >
+                    <Phone className="w-4 h-4" /> {phone}
+                  </a>
+                )}
+                <p className="text-xs text-gray-400">
+                  © {new Date().getFullYear()} {siteName}
                 </p>
               </div>
             </motion.aside>
           </>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 };
 

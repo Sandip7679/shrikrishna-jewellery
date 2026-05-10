@@ -1,199 +1,125 @@
-// import React from "react";
-
-// const testimonials = [
-//   {
-//     name: "Priya Sharma",
-//     text: "Absolutely love their silver collection! The craftsmanship is amazing and the shine lasts forever.",
-//     image: "https://randomuser.me/api/portraits/women/68.jpg",
-//   },
-//   {
-//     name: "Amit Verma",
-//     text: "Bought a silver bracelet for my wife — she’s in love with it! Great quality and elegant packaging.",
-//     image: "https://randomuser.me/api/portraits/men/43.jpg",
-//   },
-//   {
-//     name: "Sneha Patel",
-//     text: "Elegant, minimal, and pure silver — exactly what I was looking for. Highly recommend JewelAura!",
-//     image: "https://randomuser.me/api/portraits/women/75.jpg",
-//   },
-// ];
-
-// const Testimonials = () => {
-//   return (
-//     <section className="bg-gray-50 py-16">
-//       <div className="container mx-auto px-6 text-center">
-//         <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-10">
-//           What Our Customers Say
-//         </h2>
-
-//         <div className="grid gap-8 md:grid-cols-3">
-//           {testimonials.map((t, i) => (
-//             <div
-//               key={i}
-//               className="bg-white p-6 rounded-xl shadow hover:shadow-lg transition"
-//             >
-//               <img
-//                 src={t.image}
-//                 alt={t.name}
-//                 className="w-20 h-20 mx-auto rounded-full mb-4 object-cover"
-//               />
-//               <p className="text-gray-600 mb-3 italic">“{t.text}”</p>
-//               <h4 className="text-lg font-semibold text-gray-900">{t.name}</h4>
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default Testimonials;
-
-
-
-
-// import React from "react";
-// import { Swiper, SwiperSlide } from "swiper/react";
-// import { Autoplay, Pagination, Navigation } from "swiper/modules";
-
-// import "swiper/css";
-// import "swiper/css/pagination";
-// import "swiper/css/navigation";
-
-// const testimonials = [
-//   {
-//     name: "Anita Sharma",
-//     text: "Absolutely stunning silver jewellery! The craftsmanship is exquisite, and the shine is unmatched.",
-//     img: "https://randomuser.me/api/portraits/women/68.jpg",
-//   },
-//   {
-//     name: "Riya Verma",
-//     text: "Their Chandi bangles and earrings are gorgeous — traditional yet modern. Highly recommend!",
-//     img: "https://randomuser.me/api/portraits/men/43.jpg",
-//   },
-//   {
-//     name: "Nisha Kapoor",
-//     text: "I’ve been buying from them for years. Pure silver and great service every time!",
-//     img: "https://randomuser.me/api/portraits/women/75.jpg",
-//   },
-// ];
-
-// const Testimonials = () => {
-//   return (
-//     <section className="py-12 bg-gray-50">
-//       <div className="max-w-6xl mx-auto px-4 text-center">
-//         <h2 className="text-3xl font-bold text-gray-800 mb-6">Customer Testimonials</h2>
-//         <Swiper
-//           spaceBetween={30}
-//           centeredSlides={true}
-//         //   slidesPerView={3}
-//           autoplay={{
-//             delay: 2500,
-//             disableOnInteraction: false,
-//           }}
-//           pagination={{ clickable: true }}
-//           navigation={true}
-//           loop={true}
-//           modules={[Autoplay, Pagination, Navigation]}
-//           className="mySwiper"
-//         >
-//           {testimonials.map((t, index) => (
-//             <SwiperSlide key={index}>
-//               <div className="bg-white shadow-md rounded-2xl p-8 max-w-2xl mx-auto">
-//                 <img
-//                   src={t.img}
-//                   alt={t.name}
-//                   className="w-20 h-20 rounded-full mx-auto mb-4 object-cover"
-//                 />
-//                 <p className="text-gray-600 italic mb-4">“{t.text}”</p>
-//                 <h4 className="text-lg font-semibold text-gray-800">{t.name}</h4>
-//               </div>
-//             </SwiperSlide>
-//           ))}
-//         </Swiper>
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default Testimonials;
-
-
-
-import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
-
+import { Star, Quote } from "lucide-react";
+import { motion } from "framer-motion";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-
-const testimonials = [
-  {
-    name: "Anita Sharma",
-    text: "Absolutely stunning silver jewellery! The craftsmanship is exquisite, and the shine is unmatched.",
-    img: "https://randomuser.me/api/portraits/women/68.jpg",
-  },
-  {
-    name: "Riya Verma",
-    text: "Their Chandi bangles and earrings are gorgeous — traditional yet modern. Highly recommend!",
-    img: "https://randomuser.me/api/portraits/men/43.jpg",
-  },
-  {
-    name: "Nisha Kapoor",
-    text: "I’ve been buying from them for years. Pure silver and great service every time!",
-    img: "https://randomuser.me/api/portraits/women/75.jpg",
-  },
-   {
-    name: "Priya Sen",
-    text: "Lovely packaging and certified silver. I trust them completely!",
-    img: "https://randomuser.me/api/portraits/women/68.jpg",
-  },
-  {
-    name: "Meena Patel",
-    text: "The designs are elegant and authentic. Perfect for festive occasions!",
-    img: "https://randomuser.me/api/portraits/women/75.jpg",
-  },
-];
+import useTestimonials from "../../hooks/useTestimonials";
 
 const Testimonials = () => {
+  const { data: testimonials, loading } = useTestimonials();
+
+  if (loading) {
+    return (
+      <section className="py-20 bg-amber-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 text-center">
+          <div className="h-8 w-64 bg-amber-800 rounded animate-pulse mx-auto mb-10" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="h-52 bg-amber-800 rounded-2xl animate-pulse" />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!testimonials.length) return null;
+
   return (
-    <section 
-    // className="py-5 bg-red-50"
-    className="py-16 relative bg-gradient-to-br from-[#f8f8f8] via-[#e6e6e6] to-[#f4f4f4] overflow-hidden"
-    >
-      <div className="max-w-7xl mx-auto px-4 text-center">
-        <h2 className="text-3xl font-bold text-gray-800 mb-6">Customer Testimonials</h2>
-        {/* <h2 className="text-3xl font-bold text-gray-800 mb-6">What Our Customers Say</h2> */}
+    <section className="py-20 bg-amber-900 relative overflow-hidden">
+      {/* Decorative background pattern */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-0 left-0 w-96 h-96 rounded-full bg-amber-300 -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute bottom-0 right-0 w-80 h-80 rounded-full bg-amber-300 translate-x-1/2 translate-y-1/2" />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6">
+        {/* Section header */}
+        <div className="text-center mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex items-center justify-center gap-3 mb-3"
+          >
+            <span className="inline-block w-10 h-px bg-amber-400/60" />
+            <span className="text-amber-300 text-xs font-semibold tracking-[0.2em] uppercase">
+              What Customers Say
+            </span>
+            <span className="inline-block w-10 h-px bg-amber-400/60" />
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="section-title text-white"
+          >
+            Customer Testimonials
+          </motion.h2>
+        </div>
+
         <Swiper
-          spaceBetween={30}
-          slidesPerView={3}
-          centeredSlides={false}
-          autoplay={{
-            delay: 2500,
-            disableOnInteraction: false,
-          }}
+          spaceBetween={24}
+          autoplay={{ delay: 3000, disableOnInteraction: false }}
           pagination={{ clickable: true }}
-          navigation={true}
-          loop={true}
+          navigation
+          loop={testimonials.length >= 3}
           modules={[Autoplay, Pagination, Navigation]}
-          className="mySwiper h-80"
+          style={{ paddingBottom: "48px" }}
           breakpoints={{
             0: { slidesPerView: 1 },
-            768: { slidesPerView: 2 },
+            640: { slidesPerView: 2 },
             1024: { slidesPerView: 3 },
           }}
         >
-          {testimonials.map((t, index) => (
-            <SwiperSlide key={index}>
-              <div className="bg-white shadow-md rounded-2xl p-8 mx-2 hover:shadow-lg transition h-70">
-                <img
-                  src={t.img}
-                  alt={t.name}
-                  className="w-20 h-20 rounded-full mx-auto mb-4 object-cover border-2 border-gray-200"
-                />
-                <p className="text-gray-600 italic mb-4">“{t.text}”</p>
-                <h4 className="text-lg font-semibold text-gray-800">{t.name}</h4>
+          {testimonials.map((t) => (
+            <SwiperSlide key={t._id}>
+              <div className="bg-white/10 backdrop-blur-sm border border-white/15 rounded-2xl p-6 flex flex-col gap-4 h-full">
+                {/* Quote icon */}
+                <Quote className="w-8 h-8 text-amber-400 opacity-80 flex-shrink-0" />
+
+                {/* Comment */}
+                <p className="text-amber-50/90 text-sm leading-relaxed flex-1 italic">
+                  "{t.comment}"
+                </p>
+
+                {/* Stars */}
+                {t.rating && (
+                  <div className="flex gap-0.5">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`w-3.5 h-3.5 ${
+                          i < t.rating
+                            ? "fill-amber-400 text-amber-400"
+                            : "text-amber-700"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                )}
+
+                {/* Customer */}
+                <div className="flex items-center gap-3 pt-2 border-t border-white/10">
+                  {t.customer_image?.url ? (
+                    <img
+                      src={t.customer_image.url}
+                      alt={t.customer_name}
+                      className="w-10 h-10 rounded-full object-cover ring-2 ring-amber-400/40"
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-amber-700 flex items-center justify-center text-white font-bold text-sm ring-2 ring-amber-400/40">
+                      {t.customer_name?.[0]}
+                    </div>
+                  )}
+                  <div>
+                    <p className="text-white font-semibold text-sm">{t.customer_name}</p>
+                    <p className="text-amber-300/70 text-xs">Verified Customer</p>
+                  </div>
+                </div>
               </div>
             </SwiperSlide>
           ))}
@@ -204,97 +130,3 @@ const Testimonials = () => {
 };
 
 export default Testimonials;
-
-
-
-// import React from "react";
-// import { Swiper, SwiperSlide } from "swiper/react";
-// import { Autoplay, Pagination, Navigation } from "swiper/modules";
-
-// import "swiper/css";
-// import "swiper/css/pagination";
-// import "swiper/css/navigation";
-
-// const testimonials = [
-//   {
-//     name: "Anita Sharma",
-//     text: "Absolutely stunning silver jewellery! The craftsmanship is exquisite, and the shine is unmatched.",
-//     img: "https://randomuser.me/api/portraits/women/68.jpg",
-//   },
-//   {
-//     name: "Riya Verma",
-//     text: "Their Chandi bangles and earrings are gorgeous — traditional yet modern. Highly recommend!",
-//     img: "https://randomuser.me/api/portraits/men/43.jpg",
-//   },
-//   {
-//     name: "Nisha Kapoor",
-//     text: "I’ve been buying from them for years. Pure silver and great service every time!",
-//     img: "https://randomuser.me/api/portraits/women/75.jpg",
-//   },
-//   {
-//     name: "Meena Patel",
-//     text: "The designs are elegant and authentic. Perfect for festive occasions!",
-//     img: "https://randomuser.me/api/portraits/women/75.jpg",
-//   },
-//   {
-//     name: "Priya Sen",
-//     text: "Lovely packaging and certified silver. I trust them completely!",
-//     img: "https://randomuser.me/api/portraits/women/68.jpg",
-//   },
-// ];
-
-// const Testimonials = () => {
-//   return (
-//     <section className="py-16 relative bg-gradient-to-br from-[#f8f8f8] via-[#e6e6e6] to-[#f4f4f4] overflow-hidden">
-//       {/* Subtle shimmer overlay */}
-//       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.6),transparent_70%)] animate-pulse opacity-40"></div>
-
-//       <div className="relative z-10 max-w-6xl mx-auto px-4 text-center">
-//         <h2 className="text-4xl font-semibold text-gray-800 tracking-wide mb-10">
-//           <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#b3b3b3] via-[#d9d9d9] to-[#b3b3b3]">
-//             What Our Customers Say
-//           </span>
-//         </h2>
-
-//         <Swiper
-//           spaceBetween={30}
-//           slidesPerView={3}
-//           autoplay={{
-//             delay: 2500,
-//             disableOnInteraction: false,
-//           }}
-//           pagination={{ clickable: true }}
-//           navigation={true}
-//           loop={true}
-//           modules={[Autoplay, Pagination, Navigation]}
-//           breakpoints={{
-//             0: { slidesPerView: 1 },
-//             768: { slidesPerView: 2 },
-//             1024: { slidesPerView: 3 },
-//           }}
-//         >
-//           {testimonials.map((t, index) => (
-//             <SwiperSlide key={index}>
-//               <div className="bg-white/70 backdrop-blur-md border border-[#e0e0e0] rounded-2xl p-8 mx-2 shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_6px_30px_rgba(0,0,0,0.1)] transition-all duration-300">
-//                 <img
-//                   src={t.img}
-//                   alt={t.name}
-//                   className="w-20 h-20 rounded-full mx-auto mb-4 object-cover border-2 border-[#d0d0d0] shadow-sm"
-//                 />
-//                 <p className="text-gray-700 italic mb-4 leading-relaxed">
-//                   “{t.text}”
-//                 </p>
-//                 <h4 className="text-lg font-medium text-gray-800">{t.name}</h4>
-//               </div>
-//             </SwiperSlide>
-//           ))}
-//         </Swiper>
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default Testimonials;
-
-
-

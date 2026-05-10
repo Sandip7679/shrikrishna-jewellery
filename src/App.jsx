@@ -54,7 +54,6 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/collections" element={<Collections />} />
           {/* <Route path="/jewllery-details" element={<JewelleryDetails />} /> */}
-          <Route path="/jewllery-details" element={<SilverJewelleryDetails />} />
           <Route path="/jewllery-details/:id" element={<SilverJewelleryDetails />} />
           {/* <Route path="/collections/:slug" element={<Collection />} /> */}
           {/* <Route path="/product/:id" element={<Product />} /> */}

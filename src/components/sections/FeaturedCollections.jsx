@@ -1,143 +1,131 @@
-
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import image1 from "../../assets/images/neckless4.jpeg";
-import image2 from "../../assets/images/neckless1.jpeg";
-import image3 from "../../assets/images/ring1.jpg";
-import image4 from "../../assets/images/ring2.jpg";
 import JewelleryModal from "../JewelleryModal";
-import { useState } from "react";
-
-const collections = [
-  {
-    id: 1,
-    title: "Gold Collection",
-    image: image1,
-    link: "/collections/gold",
-  },
-  {
-    id: 2,
-    title: "Diamond Elegance",
-    image: image2,
-    link: "/collections/diamond",
-  },
-  {
-    id: 3,
-    title: "Silver Grace",
-    image: image3,
-    link: "/collections/silver",
-  },
-  {
-    id: 4,
-    title: "Bridal Heritage",
-    image: image4,
-    link: "/collections/bridal",
-  },
-  {
-    id: 5,
-    title: "Diamond Elegance",
-    image: image2,
-    link: "/collections/diamond",
-  },
-];
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
-};
+import useCollections from "../../hooks/useCollections";
 
 const FeaturedCollections = () => {
-
+  const { data: collections, loading } = useCollections();
   const [selectedItem, setSelectedItem] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const openModal = (item) => {
-    setSelectedItem(item);
-    setModalOpen(true);
-  };
+  const featured = collections.filter((c) => c.isFeatured);
 
-  const closeModal = () => setModalOpen(false);
+  if (loading) {
+    return (
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12">
+            <div className="h-3 w-16 bg-amber-200 rounded mx-auto mb-4 animate-pulse" />
+            <div className="h-8 w-72 bg-gray-200 rounded mx-auto animate-pulse" />
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="aspect-[3/4] bg-gray-200 rounded-2xl animate-pulse" />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!featured.length) return null;
 
   return (
-    <section className="py-24 bg-gradient-to-b from-gray-50 via-white to-gray-50 relative overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_top_left,rgba(200,200,200,0.15),transparent_60%)]" />
+    <section className="py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        {/* Section header */}
+        <div className="text-center mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex items-center justify-center gap-3 mb-3"
+          >
+            <span className="gold-line" />
+            <span className="text-amber-700 text-xs font-semibold tracking-[0.2em] uppercase">
+              Curated for You
+            </span>
+            <span className="gold-line" />
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="section-title"
+          >
+            Featured Collections
+          </motion.h2>
+        </div>
 
-      <div className="container mx-auto px-6 text-center relative z-10">
-        <motion.h2
-          initial={{ opacity: 0, y: -30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-3xl md:text-4xl font-bold text-gray-800 mb-14"
-        >
-          Featured Collections
-        </motion.h2>
-
-        {/* Swiper Carousel */}
         <Swiper
           modules={[Autoplay, Pagination, Navigation]}
-          spaceBetween={30}
+          spaceBetween={20}
           slidesPerView={1}
           pagination={{ clickable: true }}
-          navigation={true}
-          autoplay={{
-            delay: 2500,
-            disableOnInteraction: false,
-            reverseDirection: false, // always forward
-          }}
-          // autoplay={{ delay: 3000, disableOnInteraction: false }}
+          navigation
+          autoplay={{ delay: 3000, disableOnInteraction: false }}
           breakpoints={{
-            640: { slidesPerView: 2 },
+            480: { slidesPerView: 2 },
+            768: { slidesPerView: 3 },
             1024: { slidesPerView: 4 },
           }}
-          loop={true}
-          // className="pb-16"
-          style={{ paddingBottom: '37px' }}
+          loop={featured.length >= 4}
+          style={{ paddingBottom: "44px" }}
         >
-          {collections.map((item, index) => (
-            <SwiperSlide key={item.id} onClick={() => openModal(item)}>
+          {featured.map((item, index) => (
+            <SwiperSlide key={item._id}>
               <motion.div
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="show"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.15 }}
+                transition={{ delay: index * 0.08 }}
+                onClick={() => { setSelectedItem(item); setModalOpen(true); }}
+                className="cursor-pointer group"
               >
-                <Link
-                  // to={item.link}
-                  className="group block relative overflow-hidden rounded-3xl 
-                    bg-white/10 backdrop-blur-md border border-white/30 
-                    shadow-[0_4px_30px_rgba(0,0,0,0.1)] hover:shadow-[0_6px_40px_rgba(0,0,0,0.15)] 
-                    transition-all duration-500"
-                >
-                  <div className="relative overflow-hidden">
-                    <motion.img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-full h-64 object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
-                      whileHover={{ rotate: 1 }}
-                    />
+                <div className="relative overflow-hidden rounded-2xl aspect-[3/4] bg-gray-100 shadow-sm">
+                  <img
+                    src={item.image?.url}
+                    alt={item.name}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent group-hover:from-black/30 transition duration-500" />
-                    <div className="absolute top-0 left-[-75%] w-[50%] h-full bg-gradient-to-r from-transparent via-white/20 to-transparent transform rotate-12 group-hover:left-[125%] transition-all duration-1000 ease-in-out"></div>
+                  {/* Shimmer on hover */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 translate-x-[-120%] group-hover:translate-x-[120%] transition-transform duration-700" />
 
-                    <h3 className="absolute bottom-6 left-0 right-0 text-center text-xl text-white font-semibold tracking-wide">
-                      {item.title}
+                  {/* Name */}
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <h3
+                      className="text-white font-semibold text-base sm:text-lg leading-tight"
+                      style={{ fontFamily: "var(--font-heading)" }}
+                    >
+                      {item.name}
                     </h3>
+                    {item.short_desc && (
+                      <p className="text-white/70 text-xs mt-0.5 line-clamp-1">
+                        {item.short_desc}
+                      </p>
+                    )}
+                    <span className="mt-2 inline-block text-xs text-amber-300 font-medium tracking-wide group-hover:underline">
+                      View Collection →
+                    </span>
                   </div>
-                </Link>
+                </div>
               </motion.div>
             </SwiperSlide>
           ))}
         </Swiper>
+
         <JewelleryModal
           isOpen={modalOpen}
-          onClose={closeModal}
+          onClose={() => setModalOpen(false)}
           jewellery={selectedItem}
         />
       </div>
@@ -146,5 +134,3 @@ const FeaturedCollections = () => {
 };
 
 export default FeaturedCollections;
-
-

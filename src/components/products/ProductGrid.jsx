@@ -1,51 +1,83 @@
-import React from "react";
+import { motion } from "framer-motion";
 import ProductCard from "./ProductCard";
-
-import image1 from '../../assets/images/neckless4.jpeg'
-import image2 from '../../assets/images/neckless1.jpeg'
-import image3 from '../../assets/images/ring1.jpg'
-import image5 from '../../assets/images/neckless2.jpeg'
-import image4 from '../../assets/images/ring2.jpg'
-import image6 from '../../assets/images/neckless3.jpeg'
-
-const sampleProducts = [
-  {
-    name: "Silver Necklace - Floral Design",
-    price: 2499,
-    rating: 5,
-    image:image1
-  },
-  {
-    name: "Classic Silver Ring",
-    price: 1299,
-    rating: 4,
-    image:image2
-  },
-  {
-    name: "Oxidised Silver Earrings",
-    price: 1799,
-    rating: 5,
-    image:image3
-  },
-  {
-    name: "Minimal Silver Bracelet",
-    price: 1999,
-    rating: 4,
-    image:image4
-  },
-];
+import useProducts from "../../hooks/useProducts";
+import { NavLink } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 const ProductGrid = () => {
+  const { data: products, loading } = useProducts({ status: "true", limit: 8 });
+
+  if (loading) {
+    return (
+      <section className="py-20 bg-[#fdf8f2]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-12">
+            <div className="h-3 w-16 bg-amber-200 rounded mx-auto mb-4 animate-pulse" />
+            <div className="h-8 w-64 bg-gray-200 rounded mx-auto animate-pulse" />
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="aspect-square bg-gray-200 rounded-2xl animate-pulse" />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (!products.length) return null;
+
   return (
-    <section className="py-16 bg-gray-50">
-      <div className="container mx-auto px-6">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-10">
-          Our Silver Collection
-        </h2>
-        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {sampleProducts.map((product, index) => (
-            <ProductCard key={index} product={product} />
+    <section className="py-20 bg-[#fdf8f2]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        {/* Section header */}
+        <div className="text-center mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex items-center justify-center gap-3 mb-3"
+          >
+            <span className="gold-line" />
+            <span className="text-amber-700 text-xs font-semibold tracking-[0.2em] uppercase">
+              Handcrafted with Love
+            </span>
+            <span className="gold-line" />
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="section-title"
+          >
+            Our Silver Collection
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-gray-500 mt-3 text-sm max-w-md mx-auto"
+          >
+            Every piece crafted from 92.5% pure silver by master artisans.
+          </motion.p>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+          {products.map((product) => (
+            <ProductCard key={product._id} product={product} />
           ))}
+        </div>
+
+        {/* View all CTA */}
+        <div className="text-center mt-12">
+          <NavLink
+            to="/collections"
+            className="inline-flex items-center gap-2 border-2 border-amber-700 text-amber-800 hover:bg-amber-700 hover:text-white px-8 py-3 rounded-full font-semibold text-sm tracking-wide transition-all duration-300"
+          >
+            View All Products <ArrowRight className="w-4 h-4" />
+          </NavLink>
         </div>
       </div>
     </section>

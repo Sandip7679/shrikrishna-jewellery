@@ -1,145 +1,206 @@
-import { Phone, MapPin, BadgeCheck, Gem } from "lucide-react";
-// import WhatsAppButton from "../common/WhatsAppButton"; // your WhatsApp component
+import { useEffect, useState } from "react";
+import { useParams, NavLink } from "react-router-dom";
+import { BadgeCheck, Gem, Weight, Tag, ChevronLeft } from "lucide-react";
 import { motion } from "framer-motion";
-// import necklaceImg from "../../assets/images/neckless4.jpeg";
-import necklaceImg from "../assets/images/neckless4.jpeg"
+import axiosInstance from "../api/axiosInstance";
 import ZoomOnHoverImage from "../components/common/ZoomOnHoverImage";
 import ContactActions from "../components/ContactActions";
-// import ZoomOnHoverImage from "../components/common/ZoomOnHoverImage";
-// import MyReactImageMagnify from "../components/common/MyReactImageMagnify";
-
-const fadeUp = {
-    hidden: { opacity: 0, y: 40 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
-};
 
 const SilverJewelleryDetails = () => {
+  const { id: slug } = useParams();
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [activeImg, setActiveImg] = useState(0);
+
+  useEffect(() => {
+    if (!slug) { setLoading(false); return; }
+    setLoading(true);
+    axiosInstance
+      .get(`/api/products/${slug}`)
+      .then((res) => setProduct(res.data))
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, [slug]);
+
+  if (loading) {
     return (
-        <section className="pt-5 pb-16 bg-gradient-to-b from-white via-gray-50 to-white">
-            <div className="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-                {/* Left Image */}
-                <motion.div
-                    variants={fadeUp}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true }}
-                    className="flex justify-center"
-                >
-                    <div className="w-[90%] md:w-[80%] lg:w-[75%] aspect-square relative">
-                        {/* <img
-                            src={necklaceImg}
-                            alt="Handcrafted Silver Necklace"
-                            className="absolute inset-0 w-full h-full object-cover rounded-2xl shadow-xl border border-gray-200"
-                        /> */}
-                        <ZoomOnHoverImage src={necklaceImg} />
-                        {/* <MyReactImageMagnify/> */}
-                    </div>
-                </motion.div>
-
-                {/* Right Content */}
-                <motion.div
-                    variants={fadeUp}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true }}
-                    className="space-y-5"
-                >
-                    <h2 className="text-3xl md:text-4xl font-semibold text-gray-800">
-                        Traditional Silver Necklace
-                    </h2>
-
-                    <div className="flex flex-wrap gap-4 text-gray-600">
-                        <span className="flex items-center gap-2">
-                            <Gem className="w-5 h-5 text-gray-700" /> 92.5% Pure Silver
-                        </span>
-                        <span className="flex items-center gap-2">
-                            <BadgeCheck className="w-5 h-5 text-gray-700" /> Hallmarked
-                        </span>
-                    </div>
-
-                    <p className="text-gray-600 leading-relaxed">
-                        This handcrafted silver necklace is inspired by traditional Bengali
-                        artistry. Every curve and engraving reflects patience, devotion, and
-                        timeless elegance. Perfect for festive occasions or spiritual
-                        ceremonies.
-                    </p>
-
-                    <ul className="text-gray-700 space-y-2">
-                        <li>• Material: Pure Silver (Chandi 92.5%)</li>
-                        <li>• Weight: Approx. 28 grams</li>
-                        <li>• Finish: Antique Oxidized Polish</li>
-                        <li>• Craftsmanship: Handmade by skilled artisans</li>
-                    </ul>
-
-                    {/* Care Tips */}
-                    <div className="bg-gray-100 p-4 rounded-xl mt-4">
-                        <h4 className="font-medium text-gray-700 mb-2">Care Tips:</h4>
-                        <p className="text-gray-600 text-sm">
-                            Keep away from perfume and moisture. Clean with a soft dry cloth
-                            after use to maintain shine.
-                        </p>
-                    </div>
-
-                    {/* Contact / Visit Info */}
-                    {/* <div className="pt-6 border-t border-gray-200 space-y-3">
-                        <p className="flex items-center gap-2 text-gray-700">
-                            <MapPin className="w-5 h-5 text-gray-700" />
-                            Shree Krishna Silver Jewellers, College Road, Midnapore
-                        </p>
-                        <p className="flex items-center gap-2 text-gray-700">
-                            <Phone className="w-5 h-5 text-gray-700" /> +91 98765 43210
-                        </p>
-
-                        <div className="flex gap-4 pt-4">
-                            <a
-                                href="tel:+919876543210"
-                                className="px-6 py-2 rounded-full bg-gray-800 text-white hover:bg-gray-700 transition-all"
-                            >
-                                Call Now
-                            </a>
-                            <WhatsAppButton
-                                phoneNumber="+919876543210"
-                                message="Hello, I’d like to know more about the silver necklace."
-                            />
-                        </div>
-                    </div> */}
-                            <ContactActions />
-                </motion.div>
-            </div>
-
-            {/* Related Section */}
-            <div className="container mx-auto px-6 mt-20 text-center">
-                <motion.h3
-                    variants={fadeUp}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true }}
-                    className="text-2xl font-semibold text-gray-800 mb-8"
-                >
-                    You May Also Like
-                </motion.h3>
-
-                <div className="flex justify-center gap-6 flex-wrap">
-                    <div className="w-48">
-                        <img
-                            src={necklaceImg}
-                            alt="Similar Product"
-                            className="w-full h-48 object-cover rounded-lg shadow"
-                        />
-                        <p className="mt-2 text-gray-700 text-sm">Oxidized Earrings</p>
-                    </div>
-                    <div className="w-48">
-                        <img
-                            src={necklaceImg}
-                            alt="Similar Product"
-                            className="w-full h-48 object-cover rounded-lg shadow"
-                        />
-                        <p className="mt-2 text-gray-700 text-sm">Temple Design Pendant</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+      <div className="min-h-screen bg-[#fdf8f2]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12 grid md:grid-cols-2 gap-12">
+          <div className="aspect-square bg-gray-200 rounded-2xl animate-pulse" />
+          <div className="space-y-4 pt-4">
+            {[100, 60, 80, 40, 90, 50].map((w, i) => (
+              <div key={i} className={`h-4 bg-gray-200 rounded animate-pulse`} style={{ width: `${w}%` }} />
+            ))}
+          </div>
+        </div>
+      </div>
     );
+  }
+
+  if (!product) {
+    return (
+      <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4">
+        <p className="text-gray-400 text-lg">Product not found.</p>
+        <NavLink to="/collections" className="text-amber-700 text-sm font-medium hover:underline">
+          ← Back to Collections
+        </NavLink>
+      </div>
+    );
+  }
+
+  const images = product.images || [];
+  const mainImage = images[activeImg]?.url || images[0]?.url;
+
+  return (
+    <div className="min-h-screen bg-[#fdf8f2]">
+      {/* Breadcrumb */}
+      <div className="bg-white border-b border-gray-100">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3">
+          <NavLink
+            to="/collections"
+            className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-amber-700 transition"
+          >
+            <ChevronLeft className="w-4 h-4" /> Back to Collections
+          </NavLink>
+        </div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
+        <div className="grid md:grid-cols-2 gap-10 lg:gap-16 items-start">
+          {/* ── Left: Images ── */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="space-y-4"
+          >
+            {/* Main image */}
+            <div className="aspect-square rounded-2xl overflow-hidden bg-white shadow-sm border border-gray-100">
+              <ZoomOnHoverImage src={mainImage} />
+            </div>
+
+            {/* Thumbnail strip */}
+            {images.length > 1 && (
+              <div className="flex gap-3 overflow-x-auto pb-1">
+                {images.map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActiveImg(i)}
+                    className={`flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden border-2 transition ${
+                      activeImg === i
+                        ? "border-amber-600 shadow-md"
+                        : "border-gray-200 hover:border-gray-300"
+                    }`}
+                  >
+                    <img
+                      src={img.url}
+                      alt={img.alt || `View ${i + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
+          </motion.div>
+
+          {/* ── Right: Info ── */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="space-y-6"
+          >
+            {/* Title */}
+            <div>
+              <p className="text-xs font-semibold text-amber-700 uppercase tracking-widest mb-2">
+                {product.collection?.name || "Silver Jewellery"}
+              </p>
+              <h1
+                className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 leading-tight"
+                style={{ fontFamily: "var(--font-heading)" }}
+              >
+                {product.name}
+              </h1>
+            </div>
+
+            {/* Price */}
+            {(product.min_price || product.price) && (
+              <div className="bg-amber-50 border border-amber-100 rounded-xl px-5 py-4 inline-block">
+                <p className="text-2xl font-bold text-amber-800">
+                  ₹{(product.min_price || product.price).toLocaleString("en-IN")}
+                  {product.max_price && product.max_price !== product.min_price && (
+                    <span className="text-base font-normal text-amber-600 ml-1">
+                      – ₹{product.max_price.toLocaleString("en-IN")}
+                    </span>
+                  )}
+                </p>
+                <p className="text-xs text-amber-600 mt-0.5">Inclusive of all taxes</p>
+              </div>
+            )}
+
+            {/* Badges */}
+            <div className="flex flex-wrap gap-3">
+              {product.metalType && (
+                <span className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-3 py-1.5 text-xs font-medium text-gray-700">
+                  <Gem className="w-3.5 h-3.5 text-amber-600" /> {product.metalType}
+                </span>
+              )}
+              <span className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-3 py-1.5 text-xs font-medium text-gray-700">
+                <BadgeCheck className="w-3.5 h-3.5 text-amber-600" /> Hallmarked
+              </span>
+              {product.weight && (
+                <span className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-3 py-1.5 text-xs font-medium text-gray-700">
+                  <Weight className="w-3.5 h-3.5 text-amber-600" /> ~{product.weight}g
+                </span>
+              )}
+            </div>
+
+            {/* Short description */}
+            {product.shortDescription && (
+              <p className="text-gray-600 text-sm sm:text-base leading-relaxed border-t border-gray-100 pt-5">
+                {product.shortDescription}
+              </p>
+            )}
+
+            {/* Full description */}
+            {product.description && (
+              <div
+                className="text-gray-600 text-sm leading-relaxed prose max-w-none"
+                dangerouslySetInnerHTML={{ __html: product.description }}
+              />
+            )}
+
+            {/* Tags */}
+            {product.tags?.length > 0 && (
+              <div className="flex flex-wrap gap-2 pt-2">
+                <Tag className="w-4 h-4 text-gray-400 mt-0.5" />
+                {product.tags.map((tag, i) => (
+                  <span
+                    key={i}
+                    className="px-3 py-1 bg-gray-100 hover:bg-amber-50 text-gray-500 hover:text-amber-700 text-xs rounded-full transition cursor-default"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            {/* Care tips */}
+            <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-800">
+              <p className="font-semibold mb-1">Care Tips</p>
+              <p className="text-blue-700 text-xs leading-relaxed">
+                Store in an airtight pouch. Avoid contact with perfume, lotion, and water.
+                Wipe with a soft dry cloth after use to maintain shine.
+              </p>
+            </div>
+
+            {/* Contact actions */}
+            <ContactActions />
+          </motion.div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default SilverJewelleryDetails;
