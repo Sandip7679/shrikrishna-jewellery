@@ -1,20 +1,27 @@
-import React from "react";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Header from "../common/Header";
 import Footer from "../common/Footer";
+import WhatsAppButton from "../WhatsAppButton";
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [pathname]);
+  return null;
+};
 
 const MainLayout = ({ children }) => {
   return (
     <div className="flex flex-col min-h-screen bg-white text-gray-900">
-      {/* Header */}
+      <ScrollToTop />
       <Header />
-
-      {/* Main Content */}
-      <main className="flex-grow container mx-auto px-4 py-6">
+      <main className="flex-grow">
         {children}
       </main>
-
-      {/* Footer */}
       <Footer />
+      <WhatsAppButton />
     </div>
   );
 };

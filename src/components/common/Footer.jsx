@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Facebook, Instagram, Twitter, Youtube, Mail, Phone, MapPin, ArrowRight } from "lucide-react";
-import WhatsAppButton from "../WhatsAppButton";
 import useSiteSettings from "../../hooks/useSiteSettings";
 
 const navLinks = [
@@ -134,8 +133,6 @@ const Footer = () => {
           </div>
         </div>
       </footer>
-
-      <WhatsAppButton />
     </>
   );
 };

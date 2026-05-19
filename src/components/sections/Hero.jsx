@@ -112,19 +112,21 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator — mouse + animated dot */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5"
+        transition={{ delay: 1.4 }}
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 select-none"
       >
-        <span className="text-white/50 text-xs tracking-widest uppercase">Scroll</span>
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ repeat: Infinity, duration: 1.4 }}
-          className="w-px h-8 bg-gradient-to-b from-white/50 to-transparent"
-        />
+        <span className="text-white/35 text-[9px] tracking-[0.35em] uppercase">Scroll</span>
+        <div className="w-5 h-8 rounded-full border-2 border-white/25 flex justify-center pt-1.5">
+          <motion.div
+            animate={{ y: [0, 11, 0], opacity: [1, 0, 1] }}
+            transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
+            className="w-1 h-1 rounded-full bg-amber-400"
+          />
+        </div>
       </motion.div>
     </section>
   );

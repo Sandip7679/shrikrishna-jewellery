@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Menu, X, Phone } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -15,10 +15,22 @@ const navItems = [
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const lastY = useRef(0);
   const { data: settings } = useSiteSettings();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 20);
+      // Hide when scrolling down past 80px; always show when near top
+      if (y > 80) {
+        setHidden(y > lastY.current);
+      } else {
+        setHidden(false);
+      }
+      lastY.current = y;
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -28,18 +40,20 @@ const Header = () => {
 
   return (
     <>
-      <header
-        className={`sticky top-0 z-50 transition-all duration-300 ${
+      <motion.header
+        animate={{ y: menuOpen || !hidden ? 0 : "-100%" }}
+        transition={{ duration: 0.32, ease: [0.25, 0.1, 0.25, 1] }}
+        className={`sticky top-0 z-50 transition-[background,box-shadow,border-color] duration-300 ${
           scrolled
             ? "bg-white/95 backdrop-blur-md shadow-md border-b border-amber-100"
             : "bg-white border-b border-gray-100"
         }`}
       >
-        {/* Top bar — phone on desktop */}
+        {/* Top bar — phone */}
         {phone && (
           <div className="hidden md:flex justify-end items-center bg-amber-900 text-amber-100 text-xs px-6 py-1.5 gap-2">
             <Phone className="w-3 h-3" />
-            <span>{phone}</span>
+            <a href={`tel:${phone}`} className="hover:text-white transition">{phone}</a>
           </div>
         )}
 
@@ -95,7 +109,7 @@ const Header = () => {
             <Menu size={24} />
           </button>
         </div>
-      </header>
+      </motion.header>
 
       {/* Mobile Drawer */}
       <AnimatePresence>
