@@ -1,20 +1,34 @@
 import { useState } from "react";
 import { useParams, NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ChevronLeft, ArrowUpDown, Package } from "lucide-react";
+import { ChevronLeft, Package } from "lucide-react";
 import useCollection from "../hooks/useCollection";
 import useProducts from "../hooks/useProducts";
 import useCollections from "../hooks/useCollections";
 import ProductCard from "../components/products/ProductCard";
+import ProductFilterBar from "../components/ProductFilterBar";
 
 const CollectionDetail = () => {
   const { slug } = useParams();
-  const [sort, setSort] = useState("newest");
+
+  const [filters, setFilters] = useState({
+    sort: "newest",
+    search: "",
+    minPrice: "",
+    maxPrice: "",
+  });
+
+  const handleFilterChange = (partial) => {
+    setFilters((prev) => ({ ...prev, ...partial }));
+  };
 
   const { data: collection, loading: collectionLoading } = useCollection(slug);
   const { data: products, loading: productsLoading, pagination } = useProducts({
     collectionSlug: slug,
-    sort,
+    sort: filters.sort,
+    ...(filters.search ? { search: filters.search } : {}),
+    ...(filters.minPrice ? { minPrice: filters.minPrice } : {}),
+    ...(filters.maxPrice ? { maxPrice: filters.maxPrice } : {}),
     status: "true",
     limit: 24,
   });
@@ -108,26 +122,12 @@ const CollectionDetail = () => {
         </div>
       </div>
 
-      {/* Sort / filter bar */}
-      <div className="bg-white border-b border-gray-100 sticky top-0 z-30 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-          <p className="text-sm text-gray-500">
-            <span className="font-semibold text-gray-700">{totalCount}</span> products
-          </p>
-          <div className="flex items-center gap-2 text-gray-500">
-            <ArrowUpDown className="w-4 h-4" />
-            <select
-              value={sort}
-              onChange={(e) => setSort(e.target.value)}
-              className="text-sm text-gray-700 border-0 outline-none bg-transparent cursor-pointer font-medium"
-            >
-              <option value="newest">Newest First</option>
-              <option value="price_asc">Price: Low to High</option>
-              <option value="price_desc">Price: High to Low</option>
-            </select>
-          </div>
-        </div>
-      </div>
+      {/* Filter bar */}
+      <ProductFilterBar
+        filters={filters}
+        onFilterChange={handleFilterChange}
+        totalCount={totalCount}
+      />
 
       {/* Products grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 sm:py-14">
@@ -140,8 +140,16 @@ const CollectionDetail = () => {
         ) : products.length === 0 ? (
           <div className="text-center py-24">
             <Package className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-400 text-lg mb-2">No products in this collection yet.</p>
-            <p className="text-gray-300 text-sm mb-6">Check back soon — new pieces are added regularly.</p>
+            <p className="text-gray-400 text-lg mb-2">
+              {filters.search || filters.minPrice || filters.maxPrice
+                ? "No products match your filters."
+                : "No products in this collection yet."}
+            </p>
+            <p className="text-gray-300 text-sm mb-6">
+              {filters.search || filters.minPrice || filters.maxPrice
+                ? "Try adjusting or clearing your filters."
+                : "Check back soon — new pieces are added regularly."}
+            </p>
             <NavLink
               to="/collections"
               className="inline-flex items-center gap-2 bg-amber-700 hover:bg-amber-800 text-white px-6 py-2.5 rounded-full text-sm font-semibold transition"
@@ -169,7 +177,7 @@ const CollectionDetail = () => {
         )}
       </div>
 
-      {/* Description (if long form description exists) */}
+      {/* Description */}
       {collection.description && (
         <div className="bg-white py-12">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">

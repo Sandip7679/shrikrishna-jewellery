@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, Phone, Mail, Search } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import useSiteSettings from "../../hooks/useSiteSettings";
+import LanguageSwitcher from "../LanguageSwitcher";
+import SearchOverlay from "../SearchOverlay";
 
 const navItems = [
   { name: "Home", path: "/" },
@@ -14,6 +16,7 @@ const navItems = [
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const lastY = useRef(0);
@@ -23,7 +26,6 @@ const Header = () => {
     const onScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 20);
-      // Hide when scrolling down past 80px; always show when near top
       if (y > 80) {
         setHidden(y > lastY.current);
       } else {
@@ -37,11 +39,12 @@ const Header = () => {
 
   const siteName = settings?.siteName || "Shree Krishna Silver";
   const phone = settings?.phone || "";
+  const email = settings?.email || "";
 
   return (
     <>
       <motion.header
-        animate={{ y: menuOpen || !hidden ? 0 : "-100%" }}
+        animate={{ y: menuOpen || searchOpen || !hidden ? 0 : "-100%" }}
         transition={{ duration: 0.32, ease: [0.25, 0.1, 0.25, 1] }}
         className={`sticky top-0 z-50 transition-[background,box-shadow,border-color] duration-300 ${
           scrolled
@@ -49,11 +52,21 @@ const Header = () => {
             : "bg-white border-b border-gray-100"
         }`}
       >
-        {/* Top bar — phone */}
-        {phone && (
-          <div className="hidden md:flex justify-end items-center bg-amber-900 text-amber-100 text-xs px-6 py-1.5 gap-2">
-            <Phone className="w-3 h-3" />
-            <a href={`tel:${phone}`} className="hover:text-white transition">{phone}</a>
+        {/* Top bar — phone + email */}
+        {(phone || email) && (
+          <div className="hidden md:flex justify-end items-center bg-amber-900 text-amber-100 text-xs px-6 py-1.5 gap-4">
+            {phone && (
+              <a href={`tel:${phone}`} className="flex items-center gap-1.5 hover:text-white transition">
+                <Phone className="w-3 h-3" />
+                {phone}
+              </a>
+            )}
+            {email && (
+              <a href={`mailto:${email}`} className="flex items-center gap-1.5 hover:text-white transition">
+                <Mail className="w-3 h-3" />
+                {email}
+              </a>
+            )}
           </div>
         )}
 
@@ -98,18 +111,49 @@ const Header = () => {
                 )}
               </NavLink>
             ))}
+
+            {/* Divider */}
+            <div className="h-5 w-px bg-gray-200 mx-2" />
+
+            {/* Search icon */}
+            <button
+              onClick={() => setSearchOpen(true)}
+              title="Search"
+              className="p-2 rounded-lg text-gray-600 hover:text-amber-700 hover:bg-amber-50 transition"
+            >
+              <Search size={18} />
+            </button>
+
+            {/* Language */}
+            <div className="border-l border-gray-200 pl-3">
+              <LanguageSwitcher />
+            </div>
           </nav>
 
-          {/* Mobile hamburger */}
-          <button
-            onClick={() => setMenuOpen(true)}
-            className="md:hidden p-2 rounded-lg text-gray-700 hover:text-amber-700 hover:bg-amber-50 transition"
-            aria-label="Open menu"
-          >
-            <Menu size={24} />
-          </button>
+          {/* Mobile right — search + hamburger */}
+          <div className="flex md:hidden items-center gap-1">
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="p-2 rounded-lg text-gray-700 hover:text-amber-700 hover:bg-amber-50 transition"
+              aria-label="Search"
+            >
+              <Search size={20} />
+            </button>
+            <button
+              onClick={() => setMenuOpen(true)}
+              className="p-2 rounded-lg text-gray-700 hover:text-amber-700 hover:bg-amber-50 transition"
+              aria-label="Open menu"
+            >
+              <Menu size={24} />
+            </button>
+          </div>
         </div>
       </motion.header>
+
+      {/* Search Overlay */}
+      <AnimatePresence>
+        {searchOpen && <SearchOverlay onClose={() => setSearchOpen(false)} />}
+      </AnimatePresence>
 
       {/* Mobile Drawer */}
       <AnimatePresence>
@@ -178,11 +222,14 @@ const Header = () => {
                 {phone && (
                   <a
                     href={`tel:${phone}`}
-                    className="flex items-center gap-2 text-sm text-amber-800 font-medium mb-2"
+                    className="flex items-center gap-2 text-sm text-amber-800 font-medium mb-3"
                   >
                     <Phone className="w-4 h-4" /> {phone}
                   </a>
                 )}
+                <div className="mb-3">
+                  <LanguageSwitcher />
+                </div>
                 <p className="text-xs text-gray-400">
                   © {new Date().getFullYear()} {siteName}
                 </p>
