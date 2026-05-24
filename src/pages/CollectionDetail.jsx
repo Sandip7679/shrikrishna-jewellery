@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useParams, NavLink } from "react-router-dom";
+import { useParams, NavLink, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ChevronLeft, Package } from "lucide-react";
+import { ChevronLeft, ChevronRight, Package, Home } from "lucide-react";
 import useCollection from "../hooks/useCollection";
 import useProducts from "../hooks/useProducts";
 import useCollections from "../hooks/useCollections";
@@ -64,6 +64,21 @@ const CollectionDetail = () => {
 
   return (
     <div className="min-h-screen bg-[#fdf8f2]">
+      {/* Breadcrumb */}
+      <div className="bg-white border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3">
+          <nav className="flex items-center gap-1.5 text-xs text-gray-400 flex-wrap">
+            <Link to="/" className="flex items-center gap-1 hover:text-amber-700 transition">
+              <Home className="w-3.5 h-3.5" /> Home
+            </Link>
+            <ChevronRight className="w-3 h-3 flex-shrink-0" />
+            <Link to="/collections" className="hover:text-amber-700 transition">Collections</Link>
+            <ChevronRight className="w-3 h-3 flex-shrink-0" />
+            <span className="text-gray-600 truncate max-w-[200px]">{collection.name}</span>
+          </nav>
+        </div>
+      </div>
+
       {/* Hero */}
       <div className="relative bg-amber-900 py-20 sm:py-28 px-4 overflow-hidden">
         {collection.image?.url && (

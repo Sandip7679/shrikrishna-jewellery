@@ -1,8 +1,11 @@
 import { NavLink } from "react-router-dom";
-import { Star, Eye } from "lucide-react";
+import { Eye, Heart } from "lucide-react";
 import { motion } from "framer-motion";
+import { useWishlist } from "../../contexts/WishlistContext";
 
 const ProductCard = ({ product }) => {
+  const { toggle, isWishlisted } = useWishlist();
+  const wishlisted = isWishlisted(product._id);
   const { name, min_price, price, images, slug, isFeatured, metalType } = product;
   const displayPrice = min_price || price;
   const image = images?.[0]?.url;
@@ -22,6 +25,19 @@ const ProductCard = ({ product }) => {
           className="w-full h-full object-cover transition-transform duration-600 group-hover:scale-108"
           style={{ transition: "transform 0.6s ease" }}
         />
+
+        {/* Wishlist heart */}
+        <button
+          onClick={(e) => { e.preventDefault(); toggle(product); }}
+          aria-label={wishlisted ? "Remove from wishlist" : "Add to wishlist"}
+          className={`absolute top-3 right-3 z-10 w-8 h-8 rounded-full flex items-center justify-center shadow-md transition ${
+            wishlisted
+              ? "bg-red-500 text-white"
+              : "bg-white/90 text-gray-400 hover:text-red-400"
+          }`}
+        >
+          <Heart className="w-4 h-4" fill={wishlisted ? "currentColor" : "none"} />
+        </button>
 
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5">

@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Menu, X, Phone, Mail, Search } from "lucide-react";
+import { Menu, X, Phone, Search, Heart } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import useSiteSettings from "../../hooks/useSiteSettings";
 import LanguageSwitcher from "../LanguageSwitcher";
 import SearchOverlay from "../SearchOverlay";
+import { useWishlist } from "../../contexts/WishlistContext";
 
 const navItems = [
   { name: "Home", path: "/" },
@@ -21,6 +22,7 @@ const Header = () => {
   const [hidden, setHidden] = useState(false);
   const lastY = useRef(0);
   const { data: settings } = useSiteSettings();
+  const { items: wishlistItems } = useWishlist();
 
   useEffect(() => {
     const onScroll = () => {
@@ -39,7 +41,6 @@ const Header = () => {
 
   const siteName = settings?.siteName || "Shree Krishna Silver";
   const phone = settings?.phone || "";
-  const email = settings?.email || "";
 
   return (
     <>
@@ -52,23 +53,6 @@ const Header = () => {
             : "bg-white border-b border-gray-100"
         }`}
       >
-        {/* Top bar — phone + email */}
-        {(phone || email) && (
-          <div className="hidden md:flex justify-end items-center bg-amber-900 text-amber-100 text-xs px-6 py-1.5 gap-4">
-            {phone && (
-              <a href={`tel:${phone}`} className="flex items-center gap-1.5 hover:text-white transition">
-                <Phone className="w-3 h-3" />
-                {phone}
-              </a>
-            )}
-            {email && (
-              <a href={`mailto:${email}`} className="flex items-center gap-1.5 hover:text-white transition">
-                <Mail className="w-3 h-3" />
-                {email}
-              </a>
-            )}
-          </div>
-        )}
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
           {/* Logo */}
@@ -124,13 +108,27 @@ const Header = () => {
               <Search size={18} />
             </button>
 
+            {/* Wishlist icon */}
+            <Link
+              to="/wishlist"
+              title="Wishlist"
+              className="relative p-2 rounded-lg text-gray-600 hover:text-red-500 hover:bg-red-50 transition"
+            >
+              <Heart size={18} />
+              {wishlistItems.length > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                  {wishlistItems.length > 9 ? "9+" : wishlistItems.length}
+                </span>
+              )}
+            </Link>
+
             {/* Language */}
             <div className="border-l border-gray-200 pl-3">
               <LanguageSwitcher />
             </div>
           </nav>
 
-          {/* Mobile right — search + hamburger */}
+          {/* Mobile right — search + wishlist + hamburger */}
           <div className="flex md:hidden items-center gap-1">
             <button
               onClick={() => setSearchOpen(true)}
@@ -139,6 +137,18 @@ const Header = () => {
             >
               <Search size={20} />
             </button>
+            <Link
+              to="/wishlist"
+              className="relative p-2 rounded-lg text-gray-700 hover:text-red-500 hover:bg-red-50 transition"
+              aria-label="Wishlist"
+            >
+              <Heart size={20} />
+              {wishlistItems.length > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">
+                  {wishlistItems.length > 9 ? "9+" : wishlistItems.length}
+                </span>
+              )}
+            </Link>
             <button
               onClick={() => setMenuOpen(true)}
               className="p-2 rounded-lg text-gray-700 hover:text-amber-700 hover:bg-amber-50 transition"
