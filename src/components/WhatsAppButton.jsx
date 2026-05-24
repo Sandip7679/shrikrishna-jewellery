@@ -4,7 +4,9 @@ import useSiteSettings from "../hooks/useSiteSettings";
 const WhatsAppButton = () => {
   const { data: settings } = useSiteSettings();
   const number = (settings?.whatsapp || settings?.phone || "919876543210").replace(/\D/g, "");
-  const message = encodeURIComponent("Hello! I'd like to know more about your silver jewellery.");
+  const message = encodeURIComponent(
+    settings?.whatsapp_message || "Hello! I'd like to know more about your silver jewellery."
+  );
 
   return (
     <motion.a

@@ -132,17 +132,17 @@ export default function ProductFilterBar({ filters, onFilterChange, totalCount }
         {/* Mobile layout */}
         <div className="flex md:hidden items-center gap-2">
           {/* Search */}
-          <div className="flex items-center gap-2 flex-1 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 focus-within:border-amber-400 transition-colors">
+          <div className="flex items-center gap-2 flex-1 min-w-0 bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 focus-within:border-amber-400 transition-colors">
             <Search className="w-3.5 h-3.5 text-gray-400 shrink-0" />
             <input
               type="text"
               value={localSearch}
               onChange={(e) => setLocalSearch(e.target.value)}
               placeholder="Search..."
-              className="flex-1 text-sm bg-transparent outline-none text-gray-700 placeholder-gray-400"
+              className="flex-1 min-w-0 text-sm bg-transparent outline-none text-gray-700 placeholder-gray-400"
             />
             {localSearch && (
-              <button onClick={() => setLocalSearch("")} className="text-gray-400 hover:text-gray-600">
+              <button onClick={() => setLocalSearch("")} className="text-gray-400 hover:text-gray-600 shrink-0">
                 <X className="w-3.5 h-3.5" />
               </button>
             )}
@@ -151,14 +151,13 @@ export default function ProductFilterBar({ filters, onFilterChange, totalCount }
           {/* Filter toggle */}
           <button
             onClick={() => setMobileOpen((v) => !v)}
-            className={`relative flex items-center gap-1.5 text-sm font-medium px-3 py-2 rounded-lg border transition-colors ${
+            className={`relative shrink-0 flex items-center justify-center w-9 h-9 rounded-lg border transition-colors ${
               mobileOpen || activeCount > 0
                 ? "border-amber-400 text-amber-700 bg-amber-50"
                 : "border-gray-200 text-gray-600 bg-gray-50"
             }`}
           >
             <SlidersHorizontal className="w-4 h-4" />
-            Filters
             {activeCount > 0 && (
               <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-amber-600 text-white text-[10px] font-bold flex items-center justify-center">
                 {activeCount}
@@ -179,45 +178,47 @@ export default function ProductFilterBar({ filters, onFilterChange, totalCount }
             >
               <div className="pt-3 pb-1 flex flex-col gap-3">
                 {/* Price range */}
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-medium text-gray-500 w-14 shrink-0">₹ Price</span>
-                  <input
-                    type="number"
-                    value={localMin}
-                    onChange={(e) => setLocalMin(e.target.value)}
-                    placeholder="Min"
-                    className="flex-1 text-sm text-gray-700 border border-gray-200 rounded-lg px-3 py-2 outline-none focus:border-amber-400 bg-gray-50"
-                  />
-                  <span className="text-gray-300 text-sm">—</span>
-                  <input
-                    type="number"
-                    value={localMax}
-                    onChange={(e) => setLocalMax(e.target.value)}
-                    placeholder="Max"
-                    className="flex-1 text-sm text-gray-700 border border-gray-200 rounded-lg px-3 py-2 outline-none focus:border-amber-400 bg-gray-50"
-                  />
+                <div>
+                  <p className="text-xs font-medium text-gray-500 mb-1.5">Price Range (₹)</p>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="number"
+                      value={localMin}
+                      onChange={(e) => setLocalMin(e.target.value)}
+                      placeholder="Min"
+                      className="flex-1 min-w-0 text-sm text-gray-700 border border-gray-200 rounded-lg px-3 py-2 outline-none focus:border-amber-400 bg-gray-50"
+                    />
+                    <span className="text-gray-300 text-sm shrink-0">—</span>
+                    <input
+                      type="number"
+                      value={localMax}
+                      onChange={(e) => setLocalMax(e.target.value)}
+                      placeholder="Max"
+                      className="flex-1 min-w-0 text-sm text-gray-700 border border-gray-200 rounded-lg px-3 py-2 outline-none focus:border-amber-400 bg-gray-50"
+                    />
+                  </div>
                 </div>
 
                 {/* Sort + clear row */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1.5 text-gray-500">
-                    <ArrowUpDown className="w-4 h-4" />
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5 text-gray-500 min-w-0">
+                    <ArrowUpDown className="w-4 h-4 shrink-0" />
                     <select
                       value={filters.sort}
                       onChange={(e) => onFilterChange({ sort: e.target.value })}
-                      className="text-sm text-gray-700 border-0 outline-none bg-transparent cursor-pointer font-medium"
+                      className="text-sm text-gray-700 border border-gray-200 rounded-lg px-2.5 py-1.5 outline-none bg-gray-50 cursor-pointer font-medium min-w-0"
                     >
-                      <option value="newest">Newest First</option>
-                      <option value="price_asc">Price: Low to High</option>
-                      <option value="price_desc">Price: High to Low</option>
+                      <option value="newest">Newest</option>
+                      <option value="price_asc">Price: Low → High</option>
+                      <option value="price_desc">Price: High → Low</option>
                     </select>
                   </div>
                   {activeCount > 0 && (
                     <button
                       onClick={clearAll}
-                      className="text-xs font-semibold text-amber-700 hover:text-amber-900 flex items-center gap-1"
+                      className="shrink-0 text-xs font-semibold text-amber-700 hover:text-amber-900 flex items-center gap-1"
                     >
-                      <X className="w-3 h-3" /> Clear filters
+                      <X className="w-3 h-3" /> Clear
                     </button>
                   )}
                 </div>

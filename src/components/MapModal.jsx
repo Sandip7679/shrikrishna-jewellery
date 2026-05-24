@@ -75,8 +75,14 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 
-const MapModal = ({ isOpen, onClose }) => {
+const FALLBACK_EMBED = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d54073.70742229961!2d88.34702272271707!3d22.523404603689073!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a02718d95ab83fb%3A0xdda7d2a25182c08c!2sShree%20Krishna%20Silver%20Jewellers%2C%20College%20Road%2C%20Midnapore!5e0!3m2!1sen!2sin!4v1717321537374!5m2!1sen!2sin";
+const FALLBACK_DIRECTION = "https://www.google.com/maps/dir/?api=1&destination=Shree+Krishna+Silver+Jewellers,+College+Road,+Midnapore";
+
+const MapModal = ({ isOpen, onClose, embedUrl, directionUrl }) => {
   const [isLoading, setIsLoading] = useState(true);
+
+  const src = embedUrl || FALLBACK_EMBED;
+  const href = directionUrl || FALLBACK_DIRECTION;
 
   // Reset loading when modal opens
   useEffect(() => {
@@ -137,8 +143,8 @@ const MapModal = ({ isOpen, onClose }) => {
               {/* Embedded Google Map */}
               <iframe
                 key={isOpen ? "map-open" : "map-closed"}
-                title="Shree Krishna Silver Jewellers Map"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d54073.70742229961!2d88.34702272271707!3d22.523404603689073!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a02718d95ab83fb%3A0xdda7d2a25182c08c!2sShree%20Krishna%20Silver%20Jewellers%2C%20College%20Road%2C%20Midnapore!5e0!3m2!1sen!2sin!4v1717321537374!5m2!1sen!2sin"
+                title="Store Location Map"
+                src={src}
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
@@ -157,7 +163,7 @@ const MapModal = ({ isOpen, onClose }) => {
                 Close
               </button>
               <a
-                href="https://www.google.com/maps/dir/?api=1&destination=Shree+Krishna+Silver+Jewellers,+College+Road,+Midnapore"
+                href={href}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-5 py-2 rounded-full bg-amber-600 text-white hover:bg-amber-700 transition"

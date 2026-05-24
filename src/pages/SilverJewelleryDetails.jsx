@@ -188,9 +188,10 @@ const SilverJewelleryDetails = () => {
             {/* Care tips */}
             <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-800">
               <p className="font-semibold mb-1">Care Tips</p>
-              <p className="text-blue-700 text-xs leading-relaxed">
-                Store in an airtight pouch. Avoid contact with perfume, lotion, and water.
-                Wipe with a soft dry cloth after use to maintain shine.
+              <p className="text-blue-700 text-xs leading-relaxed whitespace-pre-line">
+                {product.careTips?.trim()
+                  ? product.careTips
+                  : "Store in an airtight pouch. Avoid contact with perfume, lotion, and water. Wipe with a soft dry cloth after use to maintain shine."}
               </p>
             </div>
 
